@@ -48,36 +48,6 @@ fun MyApp(navController: NavHostController) {
         }
     }
 }
-
-@Composable
-fun SplashScreen(onTimeout: () -> Unit) {
-    val delayDuration = 2000L
-
-    LaunchedEffect(Unit) {
-        delay(delayDuration)
-        onTimeout()
-    }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        // Icon for Splash Screen
-        Image(
-            painter = painterResource(id = R.drawable.ic_launcher_foreground), // Replace with your icon resource
-            contentDescription = null,
-            modifier = Modifier.size(120.dp) // Adjust size as needed
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        // Text for Splash Screen
-        Text(
-            text = "CGS POS",
-            style = MaterialTheme.typography.headlineLarge
-        )
-    }
-}
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
