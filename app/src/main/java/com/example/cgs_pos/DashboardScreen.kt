@@ -1,5 +1,6 @@
 package com.example.cgs_pos
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -54,6 +55,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -179,6 +181,12 @@ fun DashboardScreen(navController: NavController) {
 
                 // Grid view
                 val options = listOf("Purchase", "Void", "Balance", "Transaction")
+                val optionsIcon = listOf(
+                Pair("Purchase", R.drawable.purchase),
+                Pair("Void", R.drawable.resource_void),
+                Pair("Balance", R.drawable.balance),
+                Pair("Transaction", R.drawable.transaction)
+            )
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     modifier = Modifier
@@ -187,10 +195,14 @@ fun DashboardScreen(navController: NavController) {
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    items(options) { option ->
-                        OptionCard(option = option, onClick = {
-                            // Handle option click
-                        })
+                    items(optionsIcon) { (option, imageResId) ->
+                        OptionCard(
+                            option = option,
+                            imageResId = imageResId,  // Pass the drawable resource ID
+                            onClick = {
+                                // Handle option click
+                            }
+                        )
                     }
                 }
             }
@@ -284,7 +296,7 @@ fun DrawerContent(onLogoutClick: () -> Unit) {
 }
 
 @Composable
-fun OptionCard(option: String, onClick: () -> Unit) {
+fun OptionCard(option: String, onClick: () -> Unit,@DrawableRes imageResId: Int) {
     Card(
         shape = RoundedCornerShape(10.dp),
         onClick = onClick,
@@ -296,24 +308,33 @@ fun OptionCard(option: String, onClick: () -> Unit) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .height(120.dp)
-                .padding(5.dp),
+                .height(120.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = option,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
+            Column (
+                horizontalAlignment = Alignment.CenterHorizontally
+            ){
+                Image(
+                    painter = painterResource(id = imageResId),
+                    contentDescription = "Option Image",
+                    modifier = Modifier.size(30.dp).padding(bottom = 10.dp)
                 )
-            )
+                Text(
+                    text = option,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                )
+            }
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun DashboardScreenPreview() {
-//    DashboardScreen(navController = rememberNavController())
+fun DashboardScreenPreview(navController: NavController) {
+    val navController = rememberNavController()
+    DashboardScreen(navController = navController)
 }
